@@ -32,30 +32,32 @@ public class MessageHandler {
             if (message.hasText()) {
                 log.info("New message user: {}, user_id: {}, chat_id: {}, text: {}",
                         message.getFrom().getUserName(), message.getFrom().getId(), message.getChatId(), message.getText());
-                response = handleInputMessage(message);
+
+                UserMessage userMessage = new UserMessage(
+                        message.getText(),
+                        message.getFrom().getUserName(),
+                        message.getFrom().getId(),
+                        message.getChatId(),
+                        message.getDate()
+                );
+
+                response = handleInputMessage(userMessage);
             }
         }
         return response;
     }
 
-    private SendMessage handleInputMessage(@NotNull Message message) {
-        UserMessage userMessage = new UserMessage(
-                message.getText(),
-                message.getFrom().getUserName(),
-                message.getFrom().getId(),
-                message.getChatId(),
-                message.getDate()
-        );
-        log.info("Start handling input message from user {} with ID: {}", userMessage.getUsername(), userMessage.getUserId());
+    private SendMessage handleInputMessage(@NotNull UserMessage message) {
+        log.info("Start handling input message from user {} with ID: {}", message.getUsername(), message.getUserId());
 
-        ChatType chatType = ChatType.getChatType(userMessage.getChatId());
+        ChatType chatType = ChatType.getChatType(message.getChatId());
         log.info("User message type was set to: {}", chatType);
 
-        BotState botState = BotState.getBotState(chatType, userMessage.getText());
+        BotState botState = BotState.getBotState(chatType, message.getText());
         log.info("BotState was set to: {}, case: {}",
-                botState, userMessage.getText());
+                botState, message.getText());
 
-        return botModelController.execute(botState, userMessage);
+        return botModelController.execute(botState, message);
     }
 
 }
