@@ -10,8 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @Transactional
@@ -38,11 +39,10 @@ public class RegisteredUserRepositoryTest {
     public void testUserIdSearch() {
         RegisteredUser registeredUser = registeredUserRepository
                 .save(new RegisteredUser(14124L, "test"));
-        RegisteredUser foundUser = registeredUserRepository
-                .getRegisteredUserByTelegramId(registeredUser.getTelegramUserId());
+        Optional<RegisteredUser> foundUser = registeredUserRepository.findByTelegramUserId(registeredUser.getTelegramUserId());
 
-        assertNotNull(foundUser);
-        assertEquals(registeredUser.getName(), foundUser.getName());
+        assertTrue(foundUser.isPresent());
+        assertEquals(registeredUser.getName(), foundUser.get().getName());
     }
 
 }

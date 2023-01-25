@@ -11,14 +11,14 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Controller which maps factories on bot states (dispatches message handling on specific handlers)
+ * Controller which maps factories on bot commands (dispatches message handling on specific handlers)
  */
 @Component
 public class BotModelController {
 
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(MessageHandler.class);
 
-    private final HashMap<BotState, ResponseAbstractFactory> responseFactoryMap = new HashMap<>();
+    private final HashMap<BotCommand, ResponseAbstractFactory> responseFactoryMap = new HashMap<>();
 
     public BotModelController(@NotNull List<ResponseAbstractFactory> responseFactories) {
         responseFactories.forEach(responseFactory ->
@@ -29,7 +29,7 @@ public class BotModelController {
         );
     }
 
-    public SendMessage execute(BotState currentState, @NotNull UserMessage message) {
+    public SendMessage execute(BotCommand currentState, @NotNull UserMessage message) {
         ResponseAbstractFactory responseFactory = selectResponseFactory(currentState);
         log.info("Starting handling AbstractResponseFactory: {}, Message: {}",
                 responseFactory.getFactoryName(),
@@ -37,7 +37,7 @@ public class BotModelController {
         return responseFactory.handle(message);
     }
 
-    private ResponseAbstractFactory selectResponseFactory(BotState currentState) {
+    private ResponseAbstractFactory selectResponseFactory(BotCommand currentState) {
         log.info("Trying to find BotState in responseFactoryMap: {}", currentState);
         return responseFactoryMap.get(currentState);
     }

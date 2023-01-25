@@ -1,6 +1,6 @@
 package com.hasksy.tba.bot.responses.stats;
 
-import com.hasksy.tba.bot.BotState;
+import com.hasksy.tba.bot.BotCommand;
 import com.hasksy.tba.bot.responses.ResponseAbstractFactory;
 import com.hasksy.tba.model.UserMessage;
 import org.springframework.stereotype.Component;
@@ -37,8 +37,8 @@ public class HelpResponse implements ResponseAbstractFactory {
     }
 
     @Override
-    public BotState getFactoryName() {
-        return BotState.HELP;
+    public BotCommand getFactoryName() {
+        return BotCommand.HELP;
     }
 
 }

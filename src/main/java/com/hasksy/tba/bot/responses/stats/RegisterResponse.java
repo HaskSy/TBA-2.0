@@ -1,7 +1,7 @@
 package com.hasksy.tba.bot.responses.stats;
 
 import com.hasksy.tba.bot.responses.ResponseAbstractFactory;
-import com.hasksy.tba.bot.BotState;
+import com.hasksy.tba.bot.BotCommand;
 import com.hasksy.tba.model.RegisteredUser;
 import com.hasksy.tba.model.UserMessage;
 import com.hasksy.tba.repository.RegisteredUserRepository;
@@ -16,6 +16,7 @@ import java.util.Optional;
 public class RegisterResponse implements ResponseAbstractFactory {
 
     private final RegisteredUserRepository userRepository;
+
     public RegisterResponse(RegisteredUserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -25,28 +26,24 @@ public class RegisterResponse implements ResponseAbstractFactory {
 
         String textMessage = message.getText();
 
-        if (textMessage.startsWith("/reg ") || textMessage.startsWith("/reg\n")) {
+        String name = textMessage.replaceFirst(getFactoryName().getPrefix() + " ", "");
 
-            String name = textMessage.replaceFirst("/reg ", "");
+        Optional<RegisteredUser> optUser = userRepository.findByTelegramUserId(message.getUserId());
+        optUser.ifPresentOrElse(
+                (user) -> {
+                    user.setName(name);
+                    GoogleService.updateUserName(message.getUserId(), name, message.getTimestampMillis(), message.getChatId());
+                    userRepository.save(user);
+                },
+                () -> userRepository.save(new RegisteredUser(message.getUserId(), name))
+        );
 
-            Optional<RegisteredUser> optUser = userRepository.findByTelegramUserId(message.getUserId());
-            optUser.ifPresentOrElse(
-                    (user) -> {
-                        user.setName(name);
-                        GoogleService.updateUserName(message.getUserId(), name, message.getTimestamp(), message.getChatId());
-                        userRepository.save(user);
-                    },
-                    () -> userRepository.save(new RegisteredUser(message.getUserId(), name))
-            );
-
-            return new SendMessage(Long.toString(message.getChatId()), "Ваше ФИО записано ".concat(EmojiParser.parseToUnicode(":white_check_mark:")));
-        }
-        return null;
+        return new SendMessage(Long.toString(message.getChatId()), "Ваше ФИО записано ".concat(EmojiParser.parseToUnicode(":white_check_mark:")));
     }
 
     @Override
-    public BotState getFactoryName() {
-        return BotState.REGISTER;
+    public BotCommand getFactoryName() {
+        return BotCommand.REGISTER;
     }
 
 }

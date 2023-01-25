@@ -10,8 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @Transactional
@@ -38,11 +39,10 @@ public class AllowedChatRepositoryTest {
     public void testChatIdSearch() {
         AllowedChat allowedChat = allowedChatRepository
                 .save(new AllowedChat(14124L, "test"));
-        AllowedChat foundChat = allowedChatRepository
-                .getAllowedChatByTelegramId(allowedChat.getTelegramChatId());
+        Optional<AllowedChat> foundChat = allowedChatRepository.findByTelegramChatId(allowedChat.getTelegramChatId());
 
-        assertNotNull(foundChat);
-        assertEquals(allowedChat.getName(), foundChat.getName());
+        assertTrue(foundChat.isPresent());
+        assertEquals(allowedChat.getName(), foundChat.get().getName());
     }
 
 }

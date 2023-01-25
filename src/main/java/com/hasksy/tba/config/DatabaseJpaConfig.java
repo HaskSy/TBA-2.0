@@ -32,7 +32,7 @@ public class DatabaseJpaConfig {
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        // Setting data source
+
         em.setDataSource(dataSource());
         // Package where our entities are implemented
         em.setPackagesToScan("com.hasksy.tba.model");

@@ -6,9 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 
-/**
- * Spring @Configuration Class which sets bot configuration
- */
 @Configuration
 public class BotConfig {
 

@@ -30,9 +30,6 @@ public class MessageHandler {
         if (update.hasMessage()) {
             Message message = update.getMessage();
             if (message.hasText()) {
-                log.info("New message user: {}, user_id: {}, chat_id: {}, text: {}",
-                        message.getFrom().getUserName(), message.getFrom().getId(), message.getChatId(), message.getText());
-
                 UserMessage userMessage = new UserMessage(
                         message.getText(),
                         message.getFrom().getUserName(),
@@ -40,7 +37,8 @@ public class MessageHandler {
                         message.getChatId(),
                         message.getDate()
                 );
-
+                log.info("[Message timestamp: {}] New message user: {}, user_id: {}, chat_id: {}, text: {}",
+                        userMessage.getTimestampMillis(), userMessage.getUsername(), userMessage.getUserId(), userMessage.getChatId(), userMessage.getText());
                 response = handleInputMessage(userMessage);
             }
         }
@@ -53,11 +51,11 @@ public class MessageHandler {
         ChatType chatType = ChatType.getChatType(message.getChatId());
         log.info("User message type was set to: {}", chatType);
 
-        BotState botState = BotState.getBotState(chatType, message.getText());
+        BotCommand botCommand = BotCommand.getBotCommand(chatType, message.getText());
         log.info("BotState was set to: {}, case: {}",
-                botState, message.getText());
+                botCommand, message.getText());
 
-        return botModelController.execute(botState, message);
+        return botModelController.execute(botCommand, message);
     }
 
 }

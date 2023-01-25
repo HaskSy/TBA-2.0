@@ -1,6 +1,6 @@
 package com.hasksy.tba.bot.responses;
 
-import com.hasksy.tba.bot.BotState;
+import com.hasksy.tba.bot.BotCommand;
 import com.hasksy.tba.model.UserMessage;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
@@ -25,6 +25,6 @@ public interface ResponseAbstractFactory {
      * @return BotState object, which shows on which bot state {@link #handle(UserMessage)} function should be triggered
      * @implNote each BotState object should be returned only in one implementation
      */
-    BotState getFactoryName();
+    BotCommand getFactoryName();
 
 }
