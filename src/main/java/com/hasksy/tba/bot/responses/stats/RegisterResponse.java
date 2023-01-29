@@ -5,7 +5,6 @@ import com.hasksy.tba.bot.BotCommand;
 import com.hasksy.tba.model.RegisteredUser;
 import com.hasksy.tba.model.UserMessage;
 import com.hasksy.tba.repository.RegisteredUserRepository;
-import com.hasksy.tba.services.GoogleService;
 import com.vdurmont.emoji.EmojiParser;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -32,7 +31,6 @@ public class RegisterResponse implements ResponseAbstractFactory {
         optUser.ifPresentOrElse(
                 (user) -> {
                     user.setName(name);
-                    GoogleService.updateUserName(message.getUserId(), name, message.getTimestampMillis(), message.getChatId());
                     userRepository.save(user);
                 },
                 () -> userRepository.save(new RegisteredUser(message.getUserId(), name))

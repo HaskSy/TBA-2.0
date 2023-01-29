@@ -39,3 +39,6 @@ out/
 ### ENV ###
 spring-app.env
 database.env
+
+### Credentials ###
+/src/main/resources/credentials.json

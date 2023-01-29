@@ -19,7 +19,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@PropertySource("database.properties")
+@PropertySource("classpath:database.properties")
 public class DatabaseJpaConfig {
 
     @Autowired
@@ -70,9 +70,9 @@ public class DatabaseJpaConfig {
 
     Properties hibernateProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "update");
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL95Dialect");
-
+        properties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("db.ddl-auto"));
+        properties.setProperty("hibernate.dialect", env.getProperty("db.dialect"));
+        properties.setProperty("hibernate.format_sql", env.getProperty("db.format_sql"));
         return properties;
     }
 }
