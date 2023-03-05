@@ -1,5 +1,6 @@
 package com.hasksy.tba.bot;
 
+import com.hasksy.tba.app.ApplicationService;
 import com.hasksy.tba.model.UserMessage;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -20,9 +21,11 @@ public class MessageHandler {
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(MessageHandler.class);
 
     private final BotModelController botModelController;
+    private final ApplicationService applicationService;
 
-    public MessageHandler(BotModelController botModelController) {
+    public MessageHandler(BotModelController botModelController, ApplicationService applicationService) {
         this.botModelController = botModelController;
+        this.applicationService = applicationService;
     }
 
     public BotApiMethod<?> handleUpdate(Update update) {
@@ -48,7 +51,7 @@ public class MessageHandler {
     private SendMessage handleInputMessage(@NotNull UserMessage message) {
         log.info("Start handling input message from user {} with ID: {}", message.getUsername(), message.getUserId());
 
-        ChatType chatType = ChatType.getChatType(message.getChatId());
+        ChatType chatType = applicationService.getChatType(message.getChatId());
         log.info("User message type was set to: {}", chatType);
 
         BotCommand botCommand = BotCommand.getBotCommand(chatType, message.getText());

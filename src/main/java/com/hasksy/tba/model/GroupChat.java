@@ -1,5 +1,6 @@
 package com.hasksy.tba.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,22 +13,28 @@ import java.util.Objects;
 @Getter
 @Setter
 @Table(
-        name = "allowed_chats",
+        name = "group_chats",
         indexes = {
                 @Index(columnList = "telegram_chat_id", unique = true),
                 @Index(columnList = "name")
         })
-@NoArgsConstructor
-public class AllowedChat {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class GroupChat {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    @Column(name = "telegram_chat_id", unique = true)
+    @Column(name = "telegram_chat_id", unique = true, nullable = false)
     private Long telegramChatId;
     @Column(name = "name")
     private String name;
+    @Column(name = "folder_id", unique = true)
+    private String folderId;
+    @Column(name = "tsv_chat_id", unique = true)
+    private Long tsvChatId;
+    @Column(name = "respond_stats", columnDefinition = "boolean default false", nullable = false)
+    private boolean respondStats;
 
-    public AllowedChat(Long telegramChatId, String name) {
+    public GroupChat(Long telegramChatId, String name) {
         this.telegramChatId = telegramChatId;
         this.name = name;
     }
@@ -36,7 +43,7 @@ public class AllowedChat {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        AllowedChat that = (AllowedChat) o;
+        GroupChat that = (GroupChat) o;
         return id != null && Objects.equals(id, that.id);
     }
 

@@ -1,5 +1,6 @@
 package com.hasksy.tba.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,7 +18,7 @@ import java.util.Objects;
                 @Index(columnList = "telegram_user_id", unique = true),
                 @Index(columnList = "name")
         })
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RegisteredUser {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

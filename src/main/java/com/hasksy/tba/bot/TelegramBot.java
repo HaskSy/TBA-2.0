@@ -1,5 +1,6 @@
 package com.hasksy.tba.bot;
 
+import lombok.Getter;
 import lombok.Setter;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramWebhookBot;
@@ -10,9 +11,10 @@ import org.telegram.telegrambots.meta.api.objects.Update;
  * {@link TelegramWebhookBot} abstract class implementation from TelegramBot library
  */
 @Setter
+@Getter
 public class TelegramBot extends TelegramWebhookBot {
 
-    private String webHookPath;
+    private String botPath;
     private String botUsername;
     private String botToken;
 
@@ -21,21 +23,6 @@ public class TelegramBot extends TelegramWebhookBot {
     public TelegramBot(DefaultBotOptions botOptions, MessageHandler messageHandler) {
         super(botOptions);
         this.messageHandler = messageHandler;
-    }
-
-    @Override
-    public String getBotToken() {
-        return botToken;
-    }
-
-    @Override
-    public String getBotUsername() {
-        return botUsername;
-    }
-
-    @Override
-    public String getBotPath() {
-        return webHookPath;
     }
 
     /**

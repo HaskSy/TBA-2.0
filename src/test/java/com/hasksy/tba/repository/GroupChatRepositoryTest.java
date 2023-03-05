@@ -1,6 +1,6 @@
 package com.hasksy.tba.repository;
 
-import com.hasksy.tba.model.AllowedChat;
+import com.hasksy.tba.model.GroupChat;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,31 +20,31 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
 @SpringBootTest
 @TestPropertySource("/database-test.properties")
-public class AllowedChatRepositoryTest {
+public class GroupChatRepositoryTest {
 
     @Resource
-    private AllowedChatRepository allowedChatRepository;
+    private GroupChatRepository groupChatRepository;
 
     @Test
     public void test() {
-        AllowedChat allowedChat = allowedChatRepository
-                .save(new AllowedChat(1L, "test"));
+        GroupChat groupChat = groupChatRepository
+                .save(new GroupChat(1L, "test"));
 
-        AllowedChat foundChat = allowedChatRepository
-                .findById(allowedChat.getId()).orElse(null);
+        GroupChat foundChat = groupChatRepository
+                .findById(groupChat.getId()).orElse(null);
 
         assertNotNull(foundChat);
-        assertEquals(allowedChat.getName(), foundChat.getName());
+        assertEquals(groupChat.getName(), foundChat.getName());
     }
 
     @Test
     public void testChatIdSearch() {
-        AllowedChat allowedChat = allowedChatRepository
-                .save(new AllowedChat(14124L, "test"));
-        Optional<AllowedChat> foundChat = allowedChatRepository.findByTelegramChatId(allowedChat.getTelegramChatId());
+        GroupChat groupChat = groupChatRepository
+                .save(new GroupChat(14124L, "test"));
+        Optional<GroupChat> foundChat = groupChatRepository.findByTelegramChatId(groupChat.getTelegramChatId());
 
         assertTrue(foundChat.isPresent());
-        assertEquals(allowedChat.getName(), foundChat.get().getName());
+        assertEquals(groupChat.getName(), foundChat.get().getName());
     }
 
 }

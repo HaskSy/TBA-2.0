@@ -1,5 +1,7 @@
 package com.hasksy.tba.services.google;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -13,24 +15,24 @@ public class QueryBuilder {
 
     private final Map<String, String> params;
 
-    QueryBuilder() {
+    public QueryBuilder() {
         this.params = new HashMap<>();
     }
 
-    private static void requireNotNullNotEmpty(String str) {
-        if (str == null || str.isEmpty()) {
-            throw new IllegalArgumentException("Passed in QueryBuilder arguments cannot be null or empty strings");
+    private static void requireNotNullNotBlank(String str) {
+        if (str == null || str.isBlank()) {
+            throw new IllegalArgumentException("Passed in QueryBuilder arguments cannot be null or blank strings");
         }
     }
 
     public QueryBuilder setName(String name) {
-        requireNotNullNotEmpty(name);
+        requireNotNullNotBlank(name);
         params.put("name", "name = '"+ name + "'");
         return this;
     }
 
     public QueryBuilder setParent(String parent) {
-        requireNotNullNotEmpty(parent);
+        requireNotNullNotBlank(parent);
         params.put("parent", "'" + parent + "' in parents");
         return this;
     }
@@ -40,16 +42,22 @@ public class QueryBuilder {
         return this;
     }
 
-    public QueryBuilder setMimeType(String mimeType) {
-        requireNotNullNotEmpty(mimeType);
-        params.put("mimeType", "mimeType = '"+ mimeType + "'");
+    public QueryBuilder setMimeType(MimeType mimeType) {
+        requireNotNullNotBlank(mimeType.getValue());
+        params.put("mimeType", "mimeType = '"+ mimeType.getValue() + "'");
         return this;
     }
 
     public QueryBuilder setAppProperty(String key, String value) {
-        requireNotNullNotEmpty(key);
-        requireNotNullNotEmpty(value);
+        requireNotNullNotBlank(key);
+        requireNotNullNotBlank(value);
         params.put("AP_"+key, "appProperties has { key='" + key + "' and value='" + value + "' }");
+        return this;
+    }
+
+    public QueryBuilder setAppProperty(String key) {
+        requireNotNullNotBlank(key);
+        params.put("AP_"+key, "appProperties has { key='" + key + "' }");
         return this;
     }
 

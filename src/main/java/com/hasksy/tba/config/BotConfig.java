@@ -24,7 +24,7 @@ public class BotConfig {
         TelegramBot telegramBot = new TelegramBot(options, messageHandler);
         telegramBot.setBotUsername(botUsername);
         telegramBot.setBotToken(botToken);
-        telegramBot.setWebHookPath(webHookPath);
+        telegramBot.setBotPath(webHookPath);
 
         return telegramBot;
     }
