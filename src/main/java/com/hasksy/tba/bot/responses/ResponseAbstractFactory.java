@@ -1,7 +1,7 @@
 package com.hasksy.tba.bot.responses;
 
 import com.hasksy.tba.bot.BotCommand;
-import com.hasksy.tba.model.UserMessage;
+import com.hasksy.tba.bot.model.UserMessage;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;

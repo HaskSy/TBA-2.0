@@ -1,7 +1,7 @@
 package com.hasksy.tba.bot;
 
 import com.hasksy.tba.bot.responses.ResponseAbstractFactory;
-import com.hasksy.tba.model.UserMessage;
+import com.hasksy.tba.bot.model.UserMessage;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;

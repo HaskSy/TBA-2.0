@@ -1,5 +1,7 @@
 package com.hasksy.tba.bot;
 
+import com.hasksy.tba.app.model.groupchat.ChatType;
+
 /**
  * This enum contains all possible commands which bot can handle
  */
