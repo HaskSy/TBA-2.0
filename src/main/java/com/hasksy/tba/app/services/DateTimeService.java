@@ -1,36 +1,23 @@
 package com.hasksy.tba.app.services;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.Clock;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Business logic for working with time of application and received timestamps
  */
+@RequiredArgsConstructor
 public class DateTimeService {
 
     private static final Logger log = LoggerFactory.getLogger(DateTimeService.class);
 
     private final Clock clock;
-
-    public DateTimeService(Clock clock) {
-        this.clock = clock;
-    }
-
-    /**
-     * @param date date or received message
-     * @param format date and time pattern string, see <a href="https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html">SimpleDateFormat</a> JavaDoc
-     * @return formatted date
-     */
-    public static String getTimeInFormat(Date date, String format) {
-        DateFormat dtFormat = new SimpleDateFormat(format);
-        return dtFormat.format(date);
-    }
 
     /**
      * Creates simple so-called "Period marker" which identifies in which
@@ -44,11 +31,11 @@ public class DateTimeService {
      * @param timestampMillis timestamp of received message
      * @return Period marker string
      */
-    public static String getPeriodMarker(Long timestampMillis) {
-        Calendar cdr = Calendar.getInstance();
-        cdr.setTimeInMillis(timestampMillis);
-        String formatted = getTimeInFormat(cdr.getTime(), "MM.yy");
-        if (cdr.get(Calendar.DAY_OF_MONTH) <= 15) {
+    public String getPeriodMarker(Long timestampMillis) {
+        LocalDateTime time = LocalDateTime.ofInstant(Instant.ofEpochMilli(timestampMillis), clock.getZone());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM.yy");
+        String formatted = time.format(formatter);
+        if (time.getDayOfMonth() <= 15) {
             return formatted+".first";
         }
         return formatted+".second";

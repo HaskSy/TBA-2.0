@@ -1,5 +1,6 @@
 package com.hasksy.tba.bot.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import com.hasksy.tba.bot.TelegramBot;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +16,7 @@ import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("update")
+@RequiredArgsConstructor
 @Tag(name="WebHookController", description="Controller which detects update on Bot settled WebHook URL")
 public class WebHookController {
 
@@ -22,10 +24,6 @@ public class WebHookController {
 
     @Resource(name = "telegramBot")
     private final TelegramBot telegramBot;
-
-    public WebHookController(TelegramBot telegramBot) {
-        this.telegramBot = telegramBot;
-    }
 
     @Operation(
             summary = "Catches new messages & Starts handling process",

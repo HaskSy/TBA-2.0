@@ -18,6 +18,7 @@ import com.hasksy.tba.app.repository.GroupChatRepository;
 import com.hasksy.tba.app.repository.RegisteredUserRepository;
 import com.hasksy.tba.app.repository.SpreadsheetRepository;
 import com.hasksy.tba.app.services.DateTimeService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,7 @@ import java.security.GeneralSecurityException;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class ApplicationService {
 
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(ApplicationService.class);
@@ -35,26 +37,13 @@ public class ApplicationService {
     private final DriveService driveService;
     private final SheetsService sheetsService;
     private final SpreadsheetRepository spreadsheetRepository;
+    private final DateTimeService dateTimeService;
 
     // Root folder ID
     private String applicationRootFolder;
 
     // Property for identifying Application's root folder despite it's location in drive
     private static final String APP_ROOT_PROPERTY = "appRootFolder";
-
-    public ApplicationService(
-            RegisteredUserRepository registeredUserRepository,
-            GroupChatRepository groupChatRepository,
-            DriveService driveService,
-            SheetsService sheetsService,
-            SpreadsheetRepository spreadsheetRepository
-    ) {
-        this.registeredUserRepository = registeredUserRepository;
-        this.groupChatRepository = groupChatRepository;
-        this.driveService = driveService;
-        this.sheetsService = sheetsService;
-        this.spreadsheetRepository = spreadsheetRepository;
-    }
 
     public String getName(Long telegramUserId) throws UserNotRegisteredException {
         RegisteredUser user = this.registeredUserRepository.findByTelegramUserId(telegramUserId).orElseThrow(
@@ -101,7 +90,7 @@ public class ApplicationService {
             List<Object> userDataList = userData.getData();
             ValueRange valueRange = type.execute(sheetData, userDataList);
             this.sheetsService.updateSpreadsheet(spreadsheetId, valueRange);
-            return valueRange.getValues();
+            return groupChat.isRespondStats() ? valueRange.getValues() : null;
         } catch (GeneralSecurityException | IOException e) {
             throw new RuntimeException(e);
         }
@@ -193,7 +182,7 @@ public class ApplicationService {
     }
 
     public String getCurrentGroupSpreadsheet(Long groupChatId, Long timestampMillis, SpreadsheetType type) {
-        String periodMarker = DateTimeService.getPeriodMarker(timestampMillis);
+        String periodMarker = this.dateTimeService.getPeriodMarker(timestampMillis);
         Optional<Spreadsheet> optSpreadsheet = this.spreadsheetRepository.findByGroupChatIdAndTypeAndPeriodMarker(
                 groupChatId,
                 type,

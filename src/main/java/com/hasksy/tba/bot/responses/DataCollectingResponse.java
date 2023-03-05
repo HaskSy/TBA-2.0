@@ -9,6 +9,7 @@ import com.hasksy.tba.app.model.spreadsheet.UserData;
 import com.hasksy.tba.bot.model.UserMessage;
 import com.hasksy.tba.app.model.spreadsheet.SpreadsheetType;
 import com.vdurmont.emoji.EmojiParser;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -18,13 +19,10 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class DataCollectingResponse implements ResponseAbstractFactory {
 
     private final ApplicationService applicationService;
-
-    DataCollectingResponse(ApplicationService applicationService) {
-        this.applicationService = applicationService;
-    }
 
     @Override
     public SendMessage handle(@NotNull UserMessage message) {

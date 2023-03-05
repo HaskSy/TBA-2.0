@@ -7,6 +7,7 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.model.ClearValuesRequest;
 import com.google.api.services.sheets.v4.model.ValueRange;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.util.Map;
  * Service to work with Google Sheets API also containing some utility functions
  */
 @Service
+@RequiredArgsConstructor
 public class SheetsService {
 
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(AuthService.class);
@@ -27,10 +29,6 @@ public class SheetsService {
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
 
     private final DriveService driveService;
-
-    SheetsService(DriveService driveService) {
-        this.driveService = driveService;
-    }
 
     private @NotNull Sheets getSheetsService() throws IOException, GeneralSecurityException {
         final NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();

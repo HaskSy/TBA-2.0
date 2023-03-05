@@ -8,6 +8,7 @@ import com.hasksy.tba.app.model.spreadsheet.ReportData;
 import com.hasksy.tba.bot.model.UserMessage;
 import com.hasksy.tba.app.model.spreadsheet.SpreadsheetType;
 import com.vdurmont.emoji.EmojiParser;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -16,13 +17,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
+@RequiredArgsConstructor
 public class ReportResponse implements ResponseAbstractFactory {
 
     private final ApplicationService applicationService;
 
-    ReportResponse(ApplicationService applicationService) {
-        this.applicationService = applicationService;
-    }
     @Override
     public SendMessage handle(@NotNull UserMessage message) {
 

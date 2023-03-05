@@ -4,16 +4,15 @@ import com.hasksy.tba.app.ApplicationService;
 import com.hasksy.tba.bot.BotCommand;
 import com.hasksy.tba.bot.model.UserMessage;
 import com.vdurmont.emoji.EmojiParser;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 @Component
+@RequiredArgsConstructor
 public class RegisterResponse implements ResponseAbstractFactory {
 
     private final ApplicationService applicationService;
-    public RegisterResponse(ApplicationService applicationService) {
-        this.applicationService = applicationService;
-    }
 
     @Override
     public SendMessage handle(UserMessage message) {

@@ -3,6 +3,7 @@ package com.hasksy.tba.bot;
 import com.hasksy.tba.app.ApplicationService;
 import com.hasksy.tba.app.model.groupchat.ChatType;
 import com.hasksy.tba.bot.model.UserMessage;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
@@ -17,17 +18,13 @@ import org.telegram.telegrambots.meta.api.objects.Update;
  * 2. Message handling
  */
 @Component
+@RequiredArgsConstructor
 public class MessageHandler {
 
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(MessageHandler.class);
 
     private final BotModelController botModelController;
     private final ApplicationService applicationService;
-
-    public MessageHandler(BotModelController botModelController, ApplicationService applicationService) {
-        this.botModelController = botModelController;
-        this.applicationService = applicationService;
-    }
 
     public BotApiMethod<?> handleUpdate(Update update) {
         SendMessage response = null;
