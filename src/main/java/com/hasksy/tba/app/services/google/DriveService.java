@@ -7,6 +7,7 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
+import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
@@ -21,15 +22,18 @@ import java.util.Map;
  * Service to work with Google Drive API also containing some utility functions
  */
 @Service
+@RequiredArgsConstructor
 public class DriveService {
 
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(AuthService.class);
 
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
 
+    private final AuthService authService;
+
     protected @NotNull Drive getDriveService() throws GeneralSecurityException, IOException {
         final NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-        return new Drive.Builder(httpTransport, JSON_FACTORY, AuthService.getCredentials(httpTransport))
+        return new Drive.Builder(httpTransport, JSON_FACTORY, authService.getCredentials(httpTransport))
                 .build();
     }
 

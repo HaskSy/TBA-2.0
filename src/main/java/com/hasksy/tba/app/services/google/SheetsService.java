@@ -28,11 +28,12 @@ public class SheetsService {
 
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
 
+    private final AuthService authService;
     private final DriveService driveService;
 
     private @NotNull Sheets getSheetsService() throws IOException, GeneralSecurityException {
         final NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-        return new Sheets.Builder(httpTransport, JSON_FACTORY, AuthService.getCredentials(httpTransport))
+        return new Sheets.Builder(httpTransport, JSON_FACTORY, authService.getCredentials(httpTransport))
                 .build();
     }
 
