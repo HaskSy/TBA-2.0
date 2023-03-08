@@ -1,7 +1,7 @@
 package com.hasksy.tba.app.services.google;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -11,11 +11,11 @@ import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 public class QueryBuilderTest {
 
-    private QueryBuilder queryBuilder;
+    private final QueryBuilder queryBuilder = new QueryBuilder();
 
-    @BeforeEach
-    void setUp() {
-        this.queryBuilder = new QueryBuilder();
+    @AfterEach
+    void turnDown() {
+        this.queryBuilder.clear();
     }
 
     @Test
@@ -43,6 +43,13 @@ public class QueryBuilderTest {
     public void testWithPropertyMimeType() {
         String actual = this.queryBuilder.setMimeType(MimeType.GDRIVE_FOLDER).build();
         String expected = "mimeType = 'application/vnd.google-apps.folder'";
+        assertEquals("Generated Query", expected, actual);
+    }
+
+    @Test
+    public void testWithKeyOnlyAppProperty() {
+        String actual = this.queryBuilder.setAppProperty("testAppProperty").build();
+        String expected = "appProperties has { key='testAppProperty' }";
         assertEquals("Generated Query", expected, actual);
     }
 

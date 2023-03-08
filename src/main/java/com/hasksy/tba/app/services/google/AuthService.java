@@ -38,6 +38,7 @@ class AuthService {
     }
 
     protected static Credential getCredentials(NetHttpTransport httpTransport) throws IOException {
+        log.info("Obtaining Google OAuth 2.0 credentials...");
         InputStream in = AuthService.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         if (in == null) {
             throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);

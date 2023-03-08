@@ -42,11 +42,11 @@ public class DateTimeServiceTest {
     @Test
     void shouldGetPeriodMarker() {
         String periodMarker1 = dateTimeService.getPeriodMarker(0L);
-        String periodMarker2 = dateTimeService.getPeriodMarker(1678053284000L);
+        String periodMarker2 = dateTimeService.getPeriodMarker(1036328667000L);
         String periodMarker3 = dateTimeService.getPeriodMarker(1679781284000L);
         verify(clock, times(3)).getZone();
         assertEquals("Generated marker", "01.70.first", periodMarker1);
-        assertEquals("Generated marker", "03.23.first", periodMarker2);
+        assertEquals("Generated marker", "11.02.first", periodMarker2);
         assertEquals("Generated marker", "03.23.second", periodMarker3);
     }
 }
