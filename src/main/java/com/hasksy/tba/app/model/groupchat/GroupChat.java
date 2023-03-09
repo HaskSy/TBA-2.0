@@ -25,7 +25,7 @@ public class GroupChat {
     private Long id;
     @Column(name = "telegram_chat_id", unique = true, nullable = false)
     private Long telegramChatId;
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "folder_id", unique = true)
     private String folderId;

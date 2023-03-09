@@ -23,9 +23,9 @@ public class RegisteredUser {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    @Column(name = "telegram_user_id", unique = true)
+    @Column(name = "telegram_user_id", unique = true, nullable = false)
     private Long telegramUserId;
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     public RegisteredUser(Long telegramUserId, String name) {

@@ -25,11 +25,11 @@ class AuthServiceTest {
 
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-    private static final String refreshToken = "fake_refresh_token";
-    private static final String clientId = "fake_client_id";
-    private static final String clientSecret = "fake_client_secret";
-    private static final String accessToken = "fake_access_token";
-    private static final String credentialsJson = "{ \"installed\": { \"client_id\": \"" + clientId + "\", \"client_secret\": \"" + clientSecret + "\" } }";
+    private static final String REFRESH_TOKEN = "fake_refresh_token";
+    private static final String CLIENT_ID = "fake_client_id";
+    private static final String CLIENT_SECRET = "fake_client_secret";
+    private static final String ACCESS_TOKEN = "fake_access_token";
+    private static final String CREDENTIALS_JSON = "{ \"installed\": { \"client_id\": \"" + CLIENT_ID + "\", \"client_secret\": \"" + CLIENT_SECRET + "\" } }";
 
     @Mock
     private ClassLoader authServiceClassLoader;
@@ -55,14 +55,14 @@ class AuthServiceTest {
     void testGetCredentials() throws IOException {
         // Setting up the response
         // Setting up the refresh request mock
-        when(tokenRefresher.refreshAccessToken(anyString(), anyString(), anyString())).thenReturn(accessToken);
+        when(tokenRefresher.refreshAccessToken(anyString(), anyString(), anyString())).thenReturn(ACCESS_TOKEN);
         // set up application property
-        System.setProperty("GOOGLE_REFRESH_TOKEN", refreshToken);
+        System.setProperty("GOOGLE_REFRESH_TOKEN", REFRESH_TOKEN);
 
         // set up credentials.json file
-        InputStream credentialsStream = new ByteArrayInputStream(credentialsJson.getBytes(StandardCharsets.UTF_8));
+        InputStream credentialsStream = new ByteArrayInputStream(CREDENTIALS_JSON.getBytes(StandardCharsets.UTF_8));
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(credentialsStream));
-        InputStream in = new ByteArrayInputStream(credentialsJson.getBytes(StandardCharsets.UTF_8));
+        InputStream in = new ByteArrayInputStream(CREDENTIALS_JSON.getBytes(StandardCharsets.UTF_8));
         when(authServiceClassLoader.getResourceAsStream(CREDENTIALS_FILE_PATH)).thenReturn(in);
         Thread.currentThread().setContextClassLoader(authServiceClassLoader);
         // invoke method
@@ -70,10 +70,10 @@ class AuthServiceTest {
         verify(tokenRefresher).refreshAccessToken(anyString(), anyString(), anyString());
         // verify credential object
         assertNotNull(credential);
-        assertEquals(clientId, clientSecrets.getDetails().getClientId());
-        assertEquals(clientSecret, clientSecrets.getDetails().getClientSecret());
-        assertEquals(refreshToken, credential.getRefreshToken());
-        assertEquals(accessToken, credential.getAccessToken());
+        assertEquals(CLIENT_ID, clientSecrets.getDetails().getClientId());
+        assertEquals(CLIENT_SECRET, clientSecrets.getDetails().getClientSecret());
+        assertEquals(REFRESH_TOKEN, credential.getRefreshToken());
+        assertEquals(ACCESS_TOKEN, credential.getAccessToken());
     }
 
     @Test

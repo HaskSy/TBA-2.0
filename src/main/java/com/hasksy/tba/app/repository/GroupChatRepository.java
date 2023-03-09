@@ -11,5 +11,4 @@ public interface GroupChatRepository extends JpaRepository<GroupChat, Long> {
 
     Optional<GroupChat> findByTelegramChatIdOrTsvChatId(long telegramChatId, long tsvChatId);
 
-
 }
