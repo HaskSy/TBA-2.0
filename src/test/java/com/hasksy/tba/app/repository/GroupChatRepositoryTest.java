@@ -50,7 +50,6 @@ public class GroupChatRepositoryTest {
 
     @Test
     public void whenFindByTelegramChatIdOrTsvChatId_thenReturnGroupChat() {
-        final long ID = 1L;
         final long TELEGRAM_CHAT_ID = 1234L;
         final String NAME = "Test Chat";
         final long TSV_CHAT_ID = 5678L;
@@ -58,11 +57,10 @@ public class GroupChatRepositoryTest {
 
         // Given
         GroupChat groupChat = new GroupChat(TELEGRAM_CHAT_ID, NAME);
-        groupChat.setId(ID);
         groupChat.setTsvChatId(TSV_CHAT_ID);
         groupChat.setFolderId(FOLDER_IDENTIFIER);
         groupChat.setRespondStats(true);
-        groupChatRepository.save(groupChat);
+        GroupChat saved = groupChatRepository.save(groupChat);
 
         // When
         Optional<GroupChat> foundByTelegramChatId = groupChatRepository.findByTelegramChatIdOrTsvChatId(TELEGRAM_CHAT_ID, 9999L);
@@ -70,14 +68,14 @@ public class GroupChatRepositoryTest {
 
         // Then
         assertTrue(foundByTelegramChatId.isPresent());
-        assertEquals(groupChat, foundByTelegramChatId.get());
+        assertEquals(saved, foundByTelegramChatId.get());
         assertEquals(TELEGRAM_CHAT_ID, foundByTelegramChatId.get().getTelegramChatId());
         assertEquals(NAME, foundByTelegramChatId.get().getName());
         assertEquals(FOLDER_IDENTIFIER, foundByTelegramChatId.get().getFolderId());
         assertTrue(foundByTelegramChatId.get().isRespondStats());
 
         assertTrue(foundByTsvChatId.isPresent());
-        assertEquals(groupChat, foundByTsvChatId.get());
+        assertEquals(saved, foundByTsvChatId.get());
         assertEquals(TSV_CHAT_ID, foundByTsvChatId.get().getTsvChatId());
         assertEquals(NAME, foundByTsvChatId.get().getName());
         assertEquals(FOLDER_IDENTIFIER, foundByTsvChatId.get().getFolderId());
